@@ -5,10 +5,8 @@ class Solution {
     boolean[] visited;
     
     public int solution(int n, int[][] wires) {
-        
-        int answer = 1000;
-        
-        ArrayList<Integer>[] graph = new ArrayList[n + 1];
+        ArrayList<Integer>[] graph = new ArrayList[n+1];
+        int answer = 10000;
         
         for (int i=0; i<=n; i++) {
             graph[i] = new ArrayList<>();
@@ -22,33 +20,35 @@ class Solution {
             graph[b].add(a);
         }
         
-        for (int[] wire: wires) {
-            visited = new boolean[n + 1];
+        for (int[] wire : wires) {
+            visited = new boolean[n+1];
             int cutA = wire[0];
             int cutB = wire[1];
             
-            int cnt = dfs(cutA, cutA,cutB, graph);
-            
+            int cnt = dfs(cutA, cutA, cutB, graph);
             int diff = Math.abs(cnt - (n - cnt));
+            
             answer = Math.min(answer, diff);
         }
         
         return answer;
     }
     
-    int dfs(int cur, int cutA, int cutB, ArrayList<Integer>[] graph) {
+    int dfs(int current, int cutA, int cutB, ArrayList<Integer>[] graph) {
         int count = 1;
-        visited[cur] = true;
+        visited[current] = true;
         
-        for (int next: graph[cur]) {
-            if (cur == cutA && next == cutB ||
-               next == cutA && cur == cutB) {
+        for (int next: graph[current]) {
+            if (next == cutA && current == cutB ||
+               next == cutB && current == cutA) {
                 continue;
             }
             
-            if (!visited[next]) {
-                count += dfs(next, cutA, cutB, graph);
+            if (visited[next]) {
+                continue;
             }
+            
+            count += dfs(next, cutA, cutB, graph);
         }
         
         return count;
