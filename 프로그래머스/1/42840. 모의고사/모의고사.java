@@ -2,33 +2,36 @@ import java.util.*;
 
 class Solution {
     public List<Integer> solution(int[] answers) {
-        List<Integer> answer = new ArrayList<>();
-        
         int[] student1 = {1, 2, 3, 4, 5};
         int[] student2 = {2, 1, 2, 3, 2, 4, 2, 5};
         int[] student3 = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
         
-        int cnt1 = 0;
-        int cnt2 = 0;
-        int cnt3 = 0;
+        List<Integer> answer = new ArrayList<>();
+        int maxNum = 0;
         
-        for (int i=0; i< answers.length; i++) {
+        int student1Cnt = 0;
+        int student2Cnt = 0;
+        int student3Cnt = 0;
+        
+        for (int i=0; i<answers.length; i++) {
             if (answers[i] == student1[i % student1.length]) {
-                cnt1++;
+                student1Cnt++;
             }
+            
             if (answers[i] == student2[i % student2.length]) {
-                cnt2++;
+                student2Cnt++;
             }
+            
             if (answers[i] == student3[i % student3.length]) {
-                cnt3++;
+                student3Cnt++;
             }
         }
         
-        int max = Math.max(Math.max(cnt1, cnt2), cnt3);
+        maxNum = Math.max(Math.max(student1Cnt, student2Cnt), student3Cnt);
         
-        if (max == cnt1) answer.add(1);
-        if (max == cnt2) answer.add(2);
-        if (max == cnt3) answer.add(3);
+        if (maxNum == student1Cnt) answer.add(1);
+        if (maxNum == student2Cnt) answer.add(2);
+        if (maxNum == student3Cnt) answer.add(3);
         
         return answer;
     }
