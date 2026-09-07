@@ -5,18 +5,22 @@ class Solution {
         List<Integer> arr = new ArrayList<>();
         
         for (int i=0; i<prices.length; i++) {
-            boolean isAdd = false;
-            for (int j=i + 1; j < prices.length; j++) {
+            boolean isMin = false;
+            for (int j=i + 1; j<prices.length; j++) {
                 if (prices[i] > prices[j]) {
+                    isMin = true;
                     arr.add(j - i);
-                    isAdd = true;
                     break;
-                }                
-            }
-            if (!isAdd) {
-                arr.add(prices.length - 1 - i);    
+                }
+                
+                if (j == prices.length - 1 && isMin == false) {
+                    arr.add(prices.length - 1 - i);
+                    break;
+                }
             }
         }
+        
+        arr.add(0);
         
         return arr;
     }
