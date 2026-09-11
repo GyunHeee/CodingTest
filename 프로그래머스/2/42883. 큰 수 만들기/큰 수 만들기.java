@@ -2,34 +2,32 @@ import java.util.*;
 
 class Solution {
     public String solution(String number, int k) {
-        StringBuilder answer = new StringBuilder();
+        Stack<Integer> stack = new Stack<>();
         
-        Stack<Character> stack = new Stack<>();
-
         for (int i=0; i<number.length(); i++) {
-            char current = number.charAt(i);
+            int num = number.charAt(i) - '0';
             
-            while (
-                !stack.isEmpty() &&
-                k > 0 &&
-                current > stack.peek()
-            ) {
+            while (k > 0 && !stack.isEmpty() && stack.peek() < num) {
                 stack.pop();
-                k--;
+                k = k - 1;
             }
-            
-            stack.push(current);
+
+            stack.push(num);
         }
         
         while (k > 0) {
             stack.pop();
             k--;
         }
-
-        for (char digit : stack) {
-            answer.append(digit);
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for (int s : stack) {
+            sb.append(s);
         }
         
-        return answer.toString();
+        String answer = sb.toString();
+        
+        return answer;
     }
 }
