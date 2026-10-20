@@ -5,9 +5,8 @@ class Solution {
     Set<Integer> set = new HashSet<>();
     
     public int solution(String numbers) {
-        int answer = 0;
-        
         boolean[] visited = new boolean[numbers.length()];
+        
         dfs("", numbers, visited);
         
         return set.size();
@@ -15,12 +14,11 @@ class Solution {
     
     void dfs(String current, String numbers, boolean[] visited) {
         if (!current.equals("") && isPrime(current)) {
-            set.add(Integer.parseInt(current));
+            int num = Integer.parseInt(current);
+            set.add(num);
         }
         
-        
         for (int i=0; i<numbers.length(); i++) {
-            
             if (visited[i]) continue;
             
             visited[i] = true;
@@ -37,7 +35,7 @@ class Solution {
         }
         
         for (int i=2; i<num; i++) {
-            if (num % i == 0) return false;
+            if (num % i ==0) return false;
         }
         
         return true;
