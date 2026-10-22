@@ -2,41 +2,47 @@ import java.util.*;
 
 class Solution {
     
-    int answer = 100000;
-    boolean isFound = false;
-    
-    public int solution(String begin, String target, String[] words) {
-        boolean[] visited = new boolean[words.length];
-        dfs(begin, target, words, visited, 0);
-        
-        if (!isFound) {
-            answer = 0;
+    static class Node {
+        String word;
+        int depth;
+        public Node(String word, int depth) {
+            this.word = word;
+            this.depth = depth;
         }
-        return answer;
     }
     
-    // 백트레킹 문제인데
-    void dfs(String begin, String target, String[] words, boolean[] visited, int count) {
-        if (begin.equals(target)) {
-            answer = Math.min(answer, count);
-            isFound = true;
-            return;
-        }
+    public int solution(String begin, String target, String[] words) {
+        boolean[] visited = new boolean[words.length + 1];
         
-        for (int i=0; i<words.length; i++) {
-            int diff = 0;
+        return bfs(begin, target, words, visited);
+    }
+    
+    int bfs(String begin, String target, String[] words, boolean[] visited) {
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.offer(new Node(begin, 0));
+        
+        while (!queue.isEmpty()) {
+            Node cur = queue.poll();
             
-            for (int j=0; j<begin.length(); j++) {
-                if (begin.charAt(j) != words[i].charAt(j)) {
-                    diff++;
+            if (cur.word.equals(target)) {
+                return cur.depth;
+            }
+            
+            for (int i=0; i<words.length; i++) {
+                if (visited[i]) continue;
+                int diff = 0;
+                
+                for (int j=0; j<cur.word.length(); j++) {
+                    if (words[i].charAt(j) != cur.word.charAt(j)) diff++;
+                }
+                
+                if (diff == 1) {
+                    visited[i] = true;
+                    queue.offer(new Node(words[i], cur.depth + 1));
                 }
             }
-            
-            if (diff == 1 && !visited[i]) {
-                visited[i] = true;
-                dfs(words[i], target, words, visited, count + 1);
-                visited[i] = false;
-            }
         }
+        
+        return 0;
     }
 }
