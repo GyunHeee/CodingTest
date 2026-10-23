@@ -1,50 +1,44 @@
 import java.util.*;
 
 class Solution {
-    
-    int answer = 0;
-    
+
     public int solution(int[][] maps) {
         boolean[][] visited = new boolean[maps.length][maps[0].length];
-        return bfs(visited, maps, new int[]{0,0});
+        return bfs(maps, visited, new int[]{0,0,1});
     }
     
-    int bfs(boolean[][] visited, int[][] maps, int[] cur) {
+    int bfs(int[][] maps, boolean[][] visited, int[] cur) {
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+        int count = 0;
+        
         Queue<int[]> queue = new ArrayDeque<>();
         
-        int targetY = maps.length - 1;
-        int targetX = maps[0].length - 1;
-        
-        queue.offer(cur);
         visited[cur[0]][cur[1]] = true;
-        
-        int[] dx = {-1, 1, 0 , 0};
-        int[] dy = {0, 0, -1, 1};
+        queue.offer(cur);
         
         while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int curY = current[0];
+            int curX = current[1];
+            int dist = current[2];
             
-            int[] curItem = queue.poll();
-            if (curItem[0] == targetY && curItem[1] == targetX) {
-                return maps[targetY][targetX];
+            if (curY == maps.length - 1 && curX == maps[0].length - 1) {
+                return dist;
             }
             
             for (int i=0; i<4; i++) {
-                int y = curItem[0] + dy[i];
-                int x = curItem[1] + dx[i];
+                int ny = curY + dy[i];
+                int nx = curX + dx[i];
                 
-                if (y > targetY) continue;
-                if (y < 0) continue;
-                if (x > targetX) continue;
-                if (x < 0) continue;
+                if (ny >= maps.length || ny <0 || nx >= maps[0].length || nx <0)
+                    continue;
+                if (maps[ny][nx] == 0) continue;
+                if (visited[ny][nx]) continue;
                 
-                if (maps[y][x] == 0) continue;
-                if (visited[y][x]) continue;
-
-                int[] next = {y, x};
-
-                visited[y][x] = true;
-                maps[y][x] = maps[curItem[0]][curItem[1]] + 1;
-                queue.offer(next);
+                visited[ny][nx] = true;
+            
+                queue.offer(new int[]{ny, nx, dist + 1});
             }
         }
         
