@@ -2,42 +2,44 @@ import java.util.*;
 
 class Solution {
     
+    boolean isFinish = false;
     List<String> answer = new ArrayList<>();
-    boolean isFinished = false;
     
     public List<String> solution(String[][] tickets) {
-        boolean[] visited = new boolean[tickets.length];
-        
-        Arrays.sort(tickets, (a, b) -> {
+        Arrays.sort(tickets, (a,b) -> {
             if (a[0].equals(b[0])) {
                 return a[1].compareTo(b[1]);
             }
+            
             return a[0].compareTo(b[0]);
         });
         
+        boolean[] visited = new boolean[tickets.length + 1];
         answer.add("ICN");
-        dfs(visited, tickets, "ICN", 0);
+        dfs(tickets, visited, "ICN");
         return answer;
     }
     
-    void dfs(boolean[] visited, String[][] tickets, String cur, int depth) {
-        
-        if (depth == tickets.length) {
-            isFinished = true;
+    void dfs(String[][] tickets, boolean[] visited, String cur) {
+        if (answer.size() == tickets.length + 1) {
+            isFinish = true;
             return;
         }
         
         for (int i=0; i<tickets.length; i++) {
-            if (!visited[i] && tickets[i][0].equals(cur)) {
-                
+            for (int j=0; j<visited.length; j++) {
+                System.out.print(visited[j] + " ");
+            }
+            if (visited[i]) continue;
+            if (tickets[i][0].equals(cur)) {
                 visited[i] = true;
                 answer.add(tickets[i][1]);
-                dfs(visited, tickets, tickets[i][1], depth + 1);
+                dfs(tickets, visited, tickets[i][1]);
                 
-                if (isFinished) return;
-                visited[i] = false;
-                answer.remove(answer.size() - 1);  
-            } 
+                if (isFinish) return;
+                visited[i] = false;    
+                answer.remove(answer.size() - 1);
+            }
         }
     }
 }
