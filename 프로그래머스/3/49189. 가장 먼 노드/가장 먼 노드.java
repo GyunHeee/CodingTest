@@ -1,18 +1,19 @@
 import java.util.*;
 
 class Solution {    
+    int maxDistance = 0;
+    
     public int solution(int n, int[][] edge) {
+        boolean[] visited = new boolean[n + 1];
+        int[] distance = new int[n + 1];
+        List<List<Integer>> graph = new ArrayList<>();
         int answer = 0;
         
-        List<List<Integer>> graph = new ArrayList<>();
-        Queue<Integer> queue = new ArrayDeque<>();
-        int[] degrees = new int[n + 1];
-        
-        for (int i=0; i<= n ;i++) {
+        for (int i=0; i<edge.length; i++) {
             graph.add(new ArrayList<>());
         }
         
-        for (int[] e: edge) {
+        for (int[] e : edge) {
             int a = e[0];
             int b = e[1];
             
@@ -20,31 +21,32 @@ class Solution {
             graph.get(b).add(a);
         }
         
-        queue.offer(1);
-        
-        while (!queue.isEmpty()) {
-            int cur = queue.poll();
-            
-            for (int next: graph.get(cur)) {
-                
-                if (degrees[next] == 0) {
-                    degrees[next] = degrees[cur] + 1;
-                    queue.offer(next);
-                }
-            }
-        }
-
-        int max = 0;
-        for (int i=2; i<=n;i++) {
-            max = Math.max(degrees[i], max);
-        }
-        
-        for (int i=2; i<=n; i++) {
-            if (max == degrees[i]) {
-                answer++;
-            }
+        bfs(1, graph, visited, distance);
+        for (int i=0; i<distance.length; i++) {
+            if (distance[i] == maxDistance) answer++;
         }
         
         return answer;
+    }
+    
+    void bfs(int begin, List<List<Integer>> graph, boolean[] visited, int[] distance) {
+        Queue<Integer> queue = new ArrayDeque<>();
+        
+        visited[begin] = true;
+        queue.offer(begin);
+        
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            
+            for (int next : graph.get(current)) {
+                if (visited[next]) continue;
+                
+                visited[next] = true;
+                queue.offer(next);
+                
+                distance[next] = distance[current] + 1;
+                maxDistance = Math.max(maxDistance, distance[next]);
+            }
+        }
     }
 }
