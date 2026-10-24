@@ -2,46 +2,45 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int[][] results) {
+        List<List<Integer>> winGraph = new ArrayList<>();
+        List<List<Integer>> loseGraph = new ArrayList<>();
         int answer = 0;
         
-        List<List<Integer>> wins = new ArrayList<>();
-        List<List<Integer>> loses = new ArrayList<>();
-        
-        for (int i=0; i<=n; i++) {
-            wins.add(new ArrayList<>());
-            loses.add(new ArrayList<>());
+        for (int i=0; i<n+1; i++) {
+            winGraph.add(new ArrayList<>());
+            loseGraph.add(new ArrayList<>());
         }
         
         for (int[] result : results) {
-            int winner = result[0];
-            int loser = result[1];
+            int a = result[0];
+            int b = result[1];
             
-            wins.get(winner).add(loser);
-            loses.get(loser).add(winner);
+            winGraph.get(a).add(b);
+            loseGraph.get(b).add(a);
         }
         
         for (int i=1; i<=n; i++) {
-            int winCount = dfs(i, new boolean[n + 1], wins) - 1;
-            int loseCount = dfs(i, new boolean[n + 1], loses) - 1;
+            boolean[] visited = new boolean[n+1];
+            int loseCnt = dfs(visited, loseGraph, i);
+            int winCnt = dfs(visited, winGraph, i);
             
-            if (winCount + loseCount == n - 1) {
+            if (loseCnt + winCnt == n + 1) {
                 answer++;
             }
-            
-            // System.out.println(winCount + " " + loseCount);
         }
         
         return answer;
     }
     
-    int dfs(int cur, boolean[] visited, List<List<Integer>> graph) {
-        visited[cur] = true;
+    int dfs(boolean[] visited, List<List<Integer>> graph, int cur) {
         int count = 1;
         
+        visited[cur] = true;
+        
         for (int next : graph.get(cur)) {
-            if (!visited[next]) {
-                count += dfs(next, visited, graph);
-            }
+            if (visited[next]) continue;
+            
+            count += dfs(visited, graph, next);
         }
         
         return count;
