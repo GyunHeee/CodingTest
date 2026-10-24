@@ -21,8 +21,8 @@ class Solution {
         
         for (int i=1; i<=n; i++) {
             boolean[] visited = new boolean[n+1];
-            int loseCnt = dfs(visited, loseGraph, i);
-            int winCnt = dfs(visited, winGraph, i);
+            int loseCnt = bfs(visited, loseGraph, i);
+            int winCnt = bfs(visited, winGraph, i);
             
             if (loseCnt + winCnt == n + 1) {
                 answer++;
@@ -41,6 +41,28 @@ class Solution {
             if (visited[next]) continue;
             
             count += dfs(visited, graph, next);
+        }
+        
+        return count;
+    }
+    
+    int bfs(boolean[] visited, List<List<Integer>> graph, int begin) {
+        Queue<Integer> queue = new ArrayDeque<>();
+        int count = 1;
+        
+        visited[begin] = true;
+        queue.offer(begin);
+        
+        while (!queue.isEmpty()) {
+            int cur = queue.poll();
+            
+            for (int next : graph.get(cur)) {
+                if (visited[next]) continue;
+                
+                visited[next] = true;
+                count++;
+                queue.offer(next);
+            }
         }
         
         return count;
