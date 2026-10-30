@@ -1,27 +1,23 @@
 import java.util.*;
 
 class Solution {
-    public List<Integer> solution(int[] prices) {
-        List<Integer> arr = new ArrayList<>();
-        
-        for (int i=0; i<prices.length; i++) {
-            boolean isMin = false;
-            for (int j=i + 1; j<prices.length; j++) {
-                if (prices[i] > prices[j]) {
-                    isMin = true;
-                    arr.add(j - i);
-                    break;
-                }
-                
-                if (j == prices.length - 1 && isMin == false) {
-                    arr.add(prices.length - 1 - i);
-                    break;
-                }
+    public int[] solution(int[] prices) {
+        int[] answer = new int[prices.length];
+        Stack<Integer> stack = new Stack<>(); 
+ 
+        for (int i = 0; i < prices.length; i++) {
+            while (!stack.isEmpty() && prices[stack.peek()] > prices[i]) {
+                int index = stack.pop();
+                answer[index] = i - index; 
             }
+            stack.push(i);
         }
         
-        arr.add(0);
+        while (!stack.isEmpty()) {
+            int index = stack.pop();
+            answer[index] = prices.length - index - 1;
+        }
         
-        return arr;
+        return answer;
     }
 }
