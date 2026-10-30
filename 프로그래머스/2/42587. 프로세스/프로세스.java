@@ -5,8 +5,6 @@ class Solution {
         int answer = 0;
         
         Queue<int[]> queue = new ArrayDeque<>();
-        
-        
         for (int i=0; i<priorities.length; i++) {
             queue.offer(new int[]{i, priorities[i]});
         }
