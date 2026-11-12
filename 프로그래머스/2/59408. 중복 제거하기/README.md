@@ -1,6 +1,6 @@
 # [level 2] 중복 제거하기 - 59408 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59408?language=mysql) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59408) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 09월 06일 00:03:50
+2026년 11월 12일 12:04:14
 
 ### 문제 설명
 
