@@ -6,38 +6,37 @@ class Solution {
     
     public int solution(String numbers) {
         boolean[] visited = new boolean[numbers.length()];
-        
-        dfs("", numbers, visited);
+        dfs(numbers, "", visited);
         
         return set.size();
     }
     
-    void dfs(String current, String numbers, boolean[] visited) {
-        if (!current.equals("") && isPrime(current)) {
-            int num = Integer.parseInt(current);
-            set.add(num);
+    void dfs(String numbers, String cur, boolean[] visited) {
+        
+        if (!cur.equals("") && isPrime(cur)) {
+            set.add(Integer.valueOf(cur));
         }
         
         for (int i=0; i<numbers.length(); i++) {
             if (visited[i]) continue;
             
             visited[i] = true;
-            dfs(current + numbers.charAt(i), numbers, visited);
+            dfs(numbers, cur + numbers.charAt(i), visited);
             visited[i] = false;
         }
     }
     
-    boolean isPrime(String numstr) {
-        int num = Integer.parseInt(numstr);
+    boolean isPrime(String numStr) {
+        Integer num = Integer.valueOf(numStr);
         
-        if (num == 1 || num == 0) {
-            return false;
-        }
+        if (num == 1 || num == 0) return false;
         
         for (int i=2; i<num; i++) {
-            if (num % i ==0) return false;
+            if (num % i == 0) return false;
         }
         
         return true;
     }
+    
+    
 }
