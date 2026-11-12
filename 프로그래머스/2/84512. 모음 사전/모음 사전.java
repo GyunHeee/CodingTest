@@ -6,24 +6,27 @@ class Solution {
     int count = 0;
     boolean found = false;
     
+    
     public int solution(String word) {
+        
         dfs("", word);
         return count;
     }
     
-    void dfs(String cur, String word) {
+    void dfs(String current, String word) {
         if (found == true) return;
-        if (!cur.equals("")) count++;
+        if (!current.equals("")) count++;
         
-        if (word.equals(cur)) {
+        if (current.equals(word)) {
             found = true;
             return;
         }
         
-        if (cur.length() >= 5) return;
+        if (current.length() >= 5) return;
         
         for (int i=0; i<vowels.length; i++) {
-            dfs(cur + vowels[i], word);
+            
+            dfs(current + vowels[i], word);
             if (found) return;
         }
     }
