@@ -9,28 +9,24 @@ class Solution {
         int n = land.length;
         int m = land[0].length;
         
-        // 랜드끼리 묶고
         boolean[][] visited = new boolean[n][m];
         
-        for (int i=0; i<land.length; i++) {
-            for (int j=0; j<land[0].length; j++) {
-                if (land[i][j] == 1 && !visited[i][j]) {
-                    bfs(i, j, visited, land);
-                }
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<m; j++) {
+                if (land[i][j] == 1 && !visited[i][j])
+                    bfs(visited, i, j, land);
             }
         }
         
-        
-        
-        // 열 조회해서 최대값 구하기
         int maxOil = 0;
-        for (int c = 0; c < m; c++) {
+        
+        for (int x = 0; x < m; x++) {
             Set<Integer> hitChunks = new HashSet<>();
             int currentOil = 0;
             
-            for (int r = 0; r < n; r++) {
-                if (land[r][c] > 1) { // 석유 덩어리 ID가 마킹된 칸
-                    hitChunks.add(land[r][c]);
+            for (int y=0; y<n; y++) {
+                if (land[y][x] > 1) {
+                    hitChunks.add(land[y][x]);
                 }
             }
             
@@ -44,17 +40,17 @@ class Solution {
         return maxOil;
     }
     
-    void bfs(int startY, int startX, boolean[][] visited, int[][] land) {
+    void bfs(boolean[][] visited, int startY, int startX, int[][] land) {
         Queue<int[]> queue = new ArrayDeque<>();
         int n = land.length;
         int m = land[0].length;
         
+        queue.offer(new int[]{startY, startX});
         visited[startY][startX] = true;
-        queue.offer(new int[]{startY,startX,1});
         land[startY][startX] = chunkId;
-    
+        
         int[] dy = {1, -1, 0, 0};
-        int[] dx = {0, 0, 1, -1};
+        int[] dx = {0,0,-1,1};
         
         int size = 1;
         
@@ -67,18 +63,17 @@ class Solution {
                 int ny = curY + dy[i];
                 int nx = curX + dx[i];
                 
-                if (ny >= n || nx >= m || ny < 0 || nx < 0) continue;
+                if (nx < 0 || ny < 0 || ny >= n || nx >= m) continue;
                 if (visited[ny][nx]) continue;
                 if (land[ny][nx] == 0) continue;
                 
                 visited[ny][nx] = true;
                 land[ny][nx] = chunkId;
-                queue.offer(new int[]{ny, nx});   
                 size++;
+                queue.offer(new int[]{ny, nx});
             }
         }
-        
         chunkSizes.put(chunkId, size);
         chunkId++;
-    }
+    }   
 }
